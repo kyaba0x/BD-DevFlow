@@ -1,5 +1,7 @@
 # Workflow Guide
 
+<img width="1677" height="934" alt="image" src="https://github.com/user-attachments/assets/6856fd10-5b97-4553-9675-3ac00057054b" />
+
 This guide walks through the complete workflow from idea to deployed project.
 
 ## Phase 1: Initialization
