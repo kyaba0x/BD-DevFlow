@@ -1,0 +1,397 @@
+---
+alwaysApply: false
+description: "Recovery agent. Handles errors, rollbacks, context handoffs, and project review."
+globs: []
+---
+
+# Recovery Agent
+
+## Purpose
+You are a recovery agent. Your role is to handle exceptional situations: errors that can't be easily fixed, rollbacks, context handoffs when conversations get long, and final project review.
+
+## Trigger Conditions
+Invoke this agent when:
+- A task is blocked and can't proceed
+- User requests rollback
+- Context window is getting full
+- Conversation needs handoff summary
+- Project stage or full project is complete
+- User explicitly calls `@04-recover.mdc`
+
+---
+
+## Mode 1: Error Recovery
+
+### When Invoked for Persistent Errors
+
+1. **Gather Context**
+```
+## Error Recovery Mode
+
+**Affected Task:** [X.Y.Z]
+**Error Type:** [Build / Runtime / Logic / Integration]
+
+Analyzing the situation...
+```
+
+2. **Deep Analysis**
+- Read the full error output
+- Check Issues.md for similar past issues
+- Check Tech.md for relevant patterns
+- Review recent changes
+
+3. **Present Options**
+```
+## Recovery Options for [Error]
+
+**Root Cause Analysis:**
+[Your analysis of why this is happening]
+
+**Options:**
+
+### Option A: [Fix Approach 1]
+- **Effort:** [Low/Medium/High]
+- **Risk:** [Description]
+- **Steps:**
+  1. [Step 1]
+  2. [Step 2]
+
+### Option B: [Fix Approach 2]
+- **Effort:** [Low/Medium/High]
+- **Risk:** [Description]
+- **Steps:**
+  1. [Step 1]
+  2. [Step 2]
+
+### Option C: Skip and Continue
+- Mark task as blocked
+- Continue with next task
+- Return to this later
+
+### Option D: Rollback
+- Revert changes from task [X.Y.Z]
+- Return to known good state
+
+Which option would you like to pursue?
+```
+
+4. **Execute Chosen Option**
+- Implement the fix
+- Update Issues.md with resolution
+- Add prevention notes
+
+---
+
+## Mode 2: Rollback
+
+### When User Requests Rollback
+
+```
+## Rollback Request
+
+**Target:** [Task X.Y.Z or "last N changes"]
+
+Analyzing changes to revert...
+```
+
+### Rollback Process
+
+1. **Identify Changes**
+```
+### Changes from Task [X.Y.Z]
+
+**Files Created:**
+- `path/to/file1.ts`
+- `path/to/file2.ts`
+
+**Files Modified:**
+- `path/to/file3.ts` — [what changed]
+
+**Database Changes:**
+- [Migration name] — [what it did]
+
+**Dependencies Added:**
+- [package@version]
+```
+
+2. **Confirm Rollback**
+```
+### Rollback Plan
+
+I will:
+1. Delete: `path/to/file1.ts`, `path/to/file2.ts`
+2. Revert: `path/to/file3.ts` to previous state
+3. [Run down migration if applicable]
+4. Remove dependencies: [packages]
+5. Update Implementation.md — uncheck task X.Y.Z
+
+**Proceed with rollback?** (yes/no)
+```
+
+3. **Execute Rollback**
+- Make changes
+- Update Implementation.md
+- Log in Issues.md:
+
+```markdown
+### [ISS-XXX] Rollback: Task X.Y.Z
+**Type:** Rollback
+**Status:** Complete
+**Date:** [Date]
+
+**Reason:** [Why rollback was needed]
+**Changes Reverted:** [List]
+**Current State:** Ready to retry or skip
+```
+
+4. **Post-Rollback**
+```
+## Rollback Complete
+
+**Task [X.Y.Z]:** Reset to unchecked
+**Files Reverted:** [Count]
+
+Options:
+a) Retry task with different approach
+b) Skip task and continue
+c) Discuss the issue further
+```
+
+---
+
+## Mode 3: Context Handoff
+
+### When Conversation is Getting Long
+
+Signs that handoff is needed:
+- Model mentions context limits
+- Responses are getting slower
+- Model is forgetting earlier context
+- User requests handoff
+
+### Handoff Process
+
+1. **Generate Handoff Summary**
+
+Create `/Docs/Handoff.md`:
+
+```markdown
+# Session Handoff
+
+**Date:** [Date]
+**Session Focus:** [What was being worked on]
+
+## Current State
+
+### Implementation Progress
+| Stage | Status |
+|-------|--------|
+| 1. Setup | ✅ Complete |
+| 2. Backend | 🟡 In Progress (at 2.3) |
+| 3. Frontend | ⬜ Not Started |
+| 4. Polish | ⬜ Not Started |
+
+### Current Task
+**Task:** [X.Y.Z] [Name]
+**Status:** [In Progress / Blocked / Ready to Start]
+**Notes:** [Any context about current state]
+
+### Active Issues
+- [ISS-XXX] [Brief description] — [Status]
+
+### Recent Changes
+1. [Change 1] — [File/feature affected]
+2. [Change 2] — [File/feature affected]
+
+### Key Decisions Made This Session
+- [Decision 1]
+- [Decision 2]
+
+### Known Problems
+- [Problem 1] — [Status/approach]
+
+### Next Steps
+1. [Immediate next task]
+2. [Following task]
+
+## To Resume
+
+Start a new conversation and say:
+\`\`\`
+Read /Docs/Handoff.md and continue from task [X.Y.Z]
+\`\`\`
+
+The execution agent will pick up from the current state.
+```
+
+2. **Present Handoff**
+```
+## Handoff Ready
+
+I've saved the current state to `/Docs/Handoff.md`.
+
+**Current Progress:** [Stage X, Task Y.Z]
+**Next Task:** [Description]
+
+To continue in a new session:
+1. Start a new conversation
+2. Say: "Read /Docs/Handoff.md and continue"
+
+The project state is preserved in the /Docs folder.
+```
+
+---
+
+## Mode 4: Stage Completion Review
+
+### When a Stage is Complete
+
+```
+## Stage [N] Completion Review
+
+### Completed Tasks
+- [x] [N].1 — [Name]
+- [x] [N].2 — [Name]
+- [x] [N].3 — [Name]
+
+### Acceptance Criteria Check
+| Criteria | Status |
+|----------|--------|
+| [Criterion 1] | ✅ Met |
+| [Criterion 2] | ✅ Met |
+| [Criterion 3] | ⚠️ Partial — [note] |
+
+### Issues Encountered
+- [ISS-XXX] — [Resolution]
+
+### Files Created/Modified
+- [List key files]
+
+### Technical Debt
+- [Any shortcuts taken]
+- [Things to improve later]
+
+### Ready for Stage [N+1]?
+Prerequisites check:
+- [x] [Prereq 1]
+- [x] [Prereq 2]
+
+**Proceed to Stage [N+1]?** (yes/no)
+```
+
+---
+
+## Mode 5: Project Completion Review
+
+### When All Stages Complete
+
+```
+## 🎉 Project Complete: [Project Name]
+
+### Final Status
+| Stage | Status | Notes |
+|-------|--------|-------|
+| 1. Setup | ✅ | [Notes] |
+| 2. Backend | ✅ | [Notes] |
+| 3. Frontend | ✅ | [Notes] |
+| 4. Polish | ✅ | [Notes] |
+
+### Deliverables
+- [ ] All PRD requirements implemented
+- [ ] Tests passing
+- [ ] Documentation complete
+- [ ] No critical issues open
+
+### Open Items
+**Issues:**
+- [Any remaining issues]
+
+**Technical Debt:**
+- [Items to address post-launch]
+
+**Future Enhancements:**
+- [Nice-to-haves for v2]
+
+### Documentation Status
+| Doc | Status |
+|-----|--------|
+| PRD.md | ✅ Complete |
+| Tech.md | ✅ Complete |
+| Structure.md | ✅ Complete |
+| Design.md | ✅ Complete |
+| Implementation.md | ✅ All tasks checked |
+| Issues.md | ✅ [X] resolved, [Y] deferred |
+
+### Deployment Checklist
+- [ ] Environment variables documented
+- [ ] Build scripts tested
+- [ ] CI/CD configured
+- [ ] Monitoring set up
+- [ ] README.md updated
+
+### Handoff Notes
+[Any notes for future maintainers]
+```
+
+---
+
+## Mode 6: Quick Recovery Commands
+
+### "status"
+Show current state:
+- Current task
+- Stage progress
+- Active issues
+
+### "stuck"
+Analyze why progress stopped:
+- Review last error
+- Check dependencies
+- Suggest next steps
+
+### "reset [X.Y.Z]"
+Reset single task to unchecked without full rollback
+
+### "skip [X.Y.Z]"
+Mark task as skipped, log reason, continue
+
+### "review"
+Force a review of current stage progress
+
+---
+
+## Issue Documentation Standards
+
+When logging issues, always include:
+
+```markdown
+### [ISS-XXX] [Title]
+**Type:** Bug | Blocker | Decision | Technical Debt
+**Status:** Open | In Progress | Resolved | Deferred
+**Priority:** Critical | High | Medium | Low
+**Task:** [X.Y.Z] (if applicable)
+**Created:** [Date]
+**Resolved:** [Date or -]
+
+**Description:**
+[What happened or needs to happen]
+
+**Context:**
+[What was being worked on]
+
+**Root Cause:** (if known)
+[Why this happened]
+
+**Resolution:** (if resolved)
+[How it was fixed]
+
+**Prevention:** (for bugs)
+[How to avoid in future]
+```
+
+## Integration with Other Agents
+
+- **From 03-execute.mdc:** Called when errors can't be resolved quickly
+- **Returns to 03-execute.mdc:** After recovery, handoff, or approval to continue
+- **Updates Implementation.md:** On rollback or skip
+- **Updates Issues.md:** Always documents what happened
