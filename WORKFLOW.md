@@ -1,6 +1,6 @@
 # Workflow Guide
 
-<img width="1677" height="934" alt="image" src="https://github.com/user-attachments/assets/6856fd10-5b97-4553-9675-3ac00057054b" />
+<img width="1664" height="913" alt="image" src="https://github.com/user-attachments/assets/91baad2f-346d-4f48-abf1-df5d396e9d71" />
 
 This guide walks through the complete workflow from idea to deployed project.
 
