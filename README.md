@@ -1,4 +1,4 @@
-# Agentic Dev System
+# BD DevFlow System
 
 A structured workflow for AI-assisted development that separates planning from execution and enforces documentation-driven development.
 
