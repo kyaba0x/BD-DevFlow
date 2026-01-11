@@ -1,5 +1,4 @@
-# BD DevFlow System
-![banner](https://github.com/user-attachments/assets/b231151c-9384-4c77-b69d-52bf271e7113)<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400">
+![banner](https://github.com/user-attachments/assets/0d2718fb-daae-409a-8e98-9d4995d0a72c)!<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400">
   <defs>
     <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" style="stop-color:#1a1b26;stop-opacity:1" />
@@ -79,7 +78,7 @@
   <!-- BDIGITALIST -->
   <text x="600" y="380" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6E7681" text-anchor="middle">BDIGITALIST</text>
 </svg>
-
+[Uploading banner.svg…]()
 
 A structured workflow for AI-assisted development that separates planning from execution and enforces documentation-driven development.
 
